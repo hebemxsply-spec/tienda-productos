@@ -1,0 +1,33 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+body {
+  margin: 0;
+  background: #f1f5f9;
+  color: #172033;
+  font-family: Arial, sans-serif;
+}
+
+.encabezado {
+  background: linear-gradient(120deg, #172554, #2563eb);
+  color: white;
+  border-radius: 20px;
+}
+
+.card {
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgb(15 23 42 / 7%);
+}
+
+.form-control,
+.form-select,
+.btn {
+  border-radius: 10px;
+}
+
+.descripcion {
+  min-width: 180px;
+  max-width: 280px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}

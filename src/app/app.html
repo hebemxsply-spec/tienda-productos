@@ -1,0 +1,182 @@
+<main class="container py-4">
+  <header class="encabezado p-4 p-md-5 mb-4">
+    <span class="badge bg-light text-primary mb-3">
+      Gestión de inventario
+    </span>
+
+    <h1 class="fw-bold">Mi tienda tecnológica</h1>
+
+    <p class="mb-0">
+      Registra, consulta y administra tus productos.
+    </p>
+  </header>
+
+  @if (mensaje()) {
+    <div class="alert alert-info" role="status">
+      {{ mensaje() }}
+    </div>
+  }
+
+  <div class="row g-4">
+    <section class="col-lg-4">
+      <div class="card p-4">
+        <h2 class="h4 mb-2">
+          {{ editandoId() === null ? 'Nuevo producto' : 'Editar producto' }}
+        </h2>
+
+        <p class="text-secondary small">
+          Completa los cinco campos del formulario.
+        </p>
+
+        <form (submit)="guardar($event)" novalidate>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">
+              Nombre del producto
+            </label>
+            <input
+              id="nombre"
+              type="text"
+              class="form-control"
+              [formField]="formulario.nombre"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="categoria" class="form-label">
+              Categoría
+            </label>
+            <select
+              id="categoria"
+              class="form-select"
+              [formField]="formulario.categoria"
+            >
+              <option value="">Selecciona una categoría</option>
+              <option value="Accesorios">Accesorios</option>
+              <option value="Computadoras">Computadoras</option>
+              <option value="Audio">Audio</option>
+              <option value="Monitores">Monitores</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6 mb-3">
+              <label for="precio" class="form-label">
+                Precio (S/)
+              </label>
+              <input
+                id="precio"
+                type="number"
+                step="0.01"
+                class="form-control"
+                [formField]="formulario.precio"
+              />
+            </div>
+
+            <div class="col-sm-6 mb-3">
+              <label for="stock" class="form-label">
+                Stock
+              </label>
+              <input
+                id="stock"
+                type="number"
+                step="1"
+                class="form-control"
+                [formField]="formulario.stock"
+              />
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="descripcion" class="form-label">
+              Descripción
+            </label>
+            <textarea
+              id="descripcion"
+              rows="3"
+              class="form-control"
+              [formField]="formulario.descripcion"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">
+            {{ editandoId() === null ? 'Agregar producto' : 'Guardar cambios' }}
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline-secondary w-100 mt-2"
+            (click)="limpiar()"
+          >
+            {{ editandoId() === null ? 'Limpiar formulario' : 'Cancelar edición' }}
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section class="col-lg-8">
+      <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="h4 mb-0">Productos registrados</h2>
+          <span class="badge bg-primary rounded-pill">
+            {{ productos().length }}
+          </span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              @for (producto of productos(); track producto.id) {
+                <tr>
+                  <td class="fw-semibold">{{ producto.nombre }}</td>
+                  <td>{{ producto.categoria }}</td>
+                  <td class="text-nowrap">
+                    S/ {{ producto.precio | number:'1.2-2' }}
+                  </td>
+                  <td>{{ producto.stock }}</td>
+                  <td class="descripcion">{{ producto.descripcion }}</td>
+                  <td>
+                    <div class="d-flex gap-2">
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        (click)="editar(producto)"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-outline-danger btn-sm"
+                        (click)="eliminar(producto.id)"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td colspan="6" class="text-center text-secondary py-5">
+                    Todavía no tienes productos.
+                    Agrega el primero desde el formulario.
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
